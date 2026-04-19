@@ -1,0 +1,24 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1vw;
+  
+
+  /*making navbar sticky*/
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.right a,
+.left a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  font-size: 2vw;
+  padding: 1vw;
+}
+
+.right a:hover,
+.left a:hover {
+  color: rgb(255, 94, 0);
+}
