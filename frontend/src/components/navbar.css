@@ -1,20 +1,22 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  margin-top: 1vw;
+  align-items: center;
   
-
   /*making navbar sticky*/
   position: sticky;
   top: 0;
   z-index: 1000;
+
+  background: #FFFFFF;
+  height: 50px;
 }
 
 .right a,
 .left a {
   color: rgb(0, 0, 0);
   text-decoration: none;
-  font-size: 2vw;
+  font-size: 25px;
   padding: 1vw;
 }
 

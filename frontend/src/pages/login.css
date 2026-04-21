@@ -1,0 +1,46 @@
+.body-login {
+    background: linear-gradient(to bottom, rgb(250, 252, 253), rgb(202, 230, 245), rgb(89, 241, 165));
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-items: flex-start;
+    padding-top: 10vh;
+}
+
+.card {
+    max-width: 768px;
+    width: 70%;
+    border-radius: 1vw;
+    background-color: #FFFFFF;
+    padding: 1vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-fields {
+    margin: 20px 1px 10px 1px;
+    display: inline-block;
+}
+
+.input-fields input {
+    width: 90%;
+    height: 50px;
+    border-radius: 6px;
+    border: 1px solid rgb(136, 139, 155);
+    margin: 10px;
+}
+
+.button {
+    background: rgb(0, 0, 255);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    height: 50px;
+    width: 90%;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: rgb(155, 210, 240);
+}
