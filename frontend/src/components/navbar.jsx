@@ -1,7 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./navbar.css";
+import api from "../api/axios";
 
-export default function Navbar() {
+const Navbar = ({ user, setUser }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/users/logout");
+
+      setUser(null);
+
+      navigate("/login");
+    } catch (err) {
+      console.error("Failed to log out:", err);
+    }
+  };
+
   return (
 
     <nav className="navbar">
@@ -10,11 +25,22 @@ export default function Navbar() {
       </div>
 
       <div className="right">
-        <Link to="/login">Log in</Link>
-        <Link to="/profile">Profile</Link>
+        {user ? (
+          <button
+            className="bg-red-500"
+            onClick={handleLogout}>
+            Logout
+          </button>
+        ) : (<>
+          <Link to="/login">Log in</Link>
+          <Link to="/profile">Profile</Link>
+        </>)
+        }
       </div>
 
     </nav>
 
   );
 }
+
+export default Navbar;

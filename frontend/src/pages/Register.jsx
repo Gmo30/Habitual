@@ -1,10 +1,11 @@
-import "./login.css";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
-const Login = ({ setUser }) => {
+import "./login.css";
+
+const Register = ({ setUser }) => {
     const [formData, setFormData] = useState({
+        username: "",
         email: "",
         password: "",
     });
@@ -19,23 +20,37 @@ const Login = ({ setUser }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await api.post("/api/users/login", formData);
+            const res = await api.post("/api/users/register", formData);
             console.log(res.data);
 
             setUser(res.data);
             navigate("/");
         } catch (err) {
-            setError(err.response?.data?.message || "Login failed");
+            setError(err.response?.data?.message || "Registration failed");
         }
     };
 
     return (
         <div className="body-login">
             <div className="card">
-                <h1>Log in</h1>
+                <h1>Register</h1>
                 <p>Don't have an account? Sign up!</p>
                 {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
                 <form onSubmit={handleSubmit}>
+                    <div className="input-fields">
+                        <label>
+                            Username
+                        </label>
+                        <input
+                            type="username"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            placeholder="Enter your username"
+                            autoComplete="off"
+                            required
+                        />
+                    </div>
                     <div className="input-fields">
                         <label>
                             Email
@@ -63,11 +78,11 @@ const Login = ({ setUser }) => {
                             required
                         />
                     </div>
-                    <button className="button">Log in</button>
+                    <button className="button">Register</button>
                 </form>
             </div>
         </div>
     );
 }
 
-export default Login;
+export default Register;

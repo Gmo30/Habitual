@@ -5,6 +5,16 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+// Helper to set cookie (keeps code DRY)
+const sendTokenCookie = (res, token) => {
+  res.cookie("token", token, {
+    httpOnly: true, // Secure: Prevents JS access
+    secure: process.env.NODE_ENV === "production", // Only send over HTTPS in prod
+    sameSite: "strict", // CSRF protection
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days (matches JWT)
+  });
+};
+
 // Register
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
@@ -20,11 +30,14 @@ router.post("/register", async (req, res) => {
 
     const user = await User.create({ username, email, password });
     const token = await generateToken(user._id);
+
+    //Set the cookie
+    sendTokenCookie(res, token);
+
     res.status(201).json({
       id: user._id,
       username: user.username,
       email: user.email,
-      token,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Server error" });
@@ -43,16 +56,26 @@ router.post("/login", async (req, res) => {
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
     const token = generateToken(user._id);
+    
+    //Set the cookie
+    sendTokenCookie(res, token);
+    
     res.status(200).json({
       id: user._id,
       username: user.username,
       email: user.email,
-      token,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Server error" });
   }
+});
+
+// Logout (New route needed to clear the cookie)
+router.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
 });
 
 // Me
