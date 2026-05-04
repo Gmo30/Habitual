@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, Navigate} from 'react-router-dom';
-import Homepage from './pages/homepage';
+import Home from './pages/home';
 import Profile from './pages/profile';
 import Login from './pages/login';
 import Register from './pages/Register';
@@ -44,7 +44,7 @@ function App() {
         <BrowserRouter>
             <Navbar user={user} setUser={setUser} />
             <Routes>
-                <Route path="/" element={<Homepage />} />
+                <Route path="/" element={<Home user={user} error={error} />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route
                     path="/login"
