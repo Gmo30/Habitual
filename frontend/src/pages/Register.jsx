@@ -34,7 +34,23 @@ const Register = ({ setUser }) => {
         <div className="body-login">
             <div className="card">
                 <h1>Register</h1>
-                <p>Don't have an account? Sign up!</p>
+                <p>
+                    Have an account already?{" "}
+                    <button
+                        onClick={() => navigate("/login")}
+                        style={{
+                            background: "none",
+                            border: "none",
+                            color: "#007bff",
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                            padding: 0,
+                            font: "inherit",
+                        }}
+                    >
+                        Log in!
+                    </button>
+                </p>
                 {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="input-fields">
