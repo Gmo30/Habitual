@@ -14,13 +14,42 @@ const DEFAULT_HABITS = [
   "Walk 10k Steps",
 ];
 
-const Navbar = ({ user, setUser, habits, loading, addHabit, removeHabit }) => {
+const Navbar = ({ user, setUser, habits, loading, addHabit, removeHabit, searchUsers }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showHabitsModal, setShowHabitsModal] = useState(false);
   const [newHabit, setNewHabit] = useState("");
   const [inputError, setInputError] = useState("");
   const modalRef = useRef(null);
+
+  // Search state
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowSearch(false);
+        setSearchQuery("");
+        setSearchResults([]);
+      }
+    };
+    if (showSearch) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showSearch]);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) { setSearchResults([]); return; }
+    const timeout = setTimeout(async () => {
+      try {
+        const results = await searchUsers(searchQuery);
+        setSearchResults(results);
+      } catch {}
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
 
   //Daily streak vars
   const [streak, setStreak] = useState(0);
@@ -163,11 +192,61 @@ const Navbar = ({ user, setUser, habits, loading, addHabit, removeHabit }) => {
               </button>
 
               <Link
+                to="/discover"
+                className={`nav-link ${isActive("/discover") ? "active" : ""}`}
+              >
+                Discover
+              </Link>
+
+              <Link
                 to="/profile"
                 className={`nav-link ${isActive("/profile") ? "active" : ""}`}
               >
                 Profile
               </Link>
+
+              {/* Search */}
+              <div className="search-wrap" ref={searchRef}>
+                <button
+                  className="search-icon-btn"
+                  onClick={() => { setShowSearch((p) => !p); setSearchQuery(""); setSearchResults([]); }}
+                  aria-label="Search users"
+                >
+                  🔍
+                </button>
+                {showSearch && (
+                  <div className="search-dropdown">
+                    <input
+                      autoFocus
+                      type="text"
+                      className="search-input"
+                      placeholder="Search users..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    {searchResults.length > 0 && (
+                      <ul className="search-results">
+                        {searchResults.map((u) => (
+                          <li key={u._id}>
+                            <Link
+                              to={`/users/${u.username}`}
+                              className="search-result-item"
+                              onClick={() => { setShowSearch(false); setSearchQuery(""); setSearchResults([]); }}
+                            >
+                              <span className="search-result-avatar">{u.username[0].toUpperCase()}</span>
+                              <span>{u.username}</span>
+                              <span className="search-result-streak">🔥 {u.streak?.current ?? 0}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {searchQuery.trim() && searchResults.length === 0 && (
+                      <p className="search-no-results">No users found</p>
+                    )}
+                  </div>
+                )}
+              </div>
 
               <button className="btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full" onClick={handleLogout}>
                 Logout

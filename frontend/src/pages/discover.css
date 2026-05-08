@@ -1,0 +1,147 @@
+.discover-page {
+  min-height: 100vh;
+  background: #111827;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.discover-container {
+  width: 100%;
+  max-width: 680px;
+}
+
+.discover-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.25rem;
+}
+
+.discover-subtitle {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
+.discover-error,
+.discover-empty {
+  color: #9ca3af;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.discover-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.discover-card {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.discover-card-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.discover-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #6d28d9;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.discover-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.discover-username {
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.discover-username:hover { color: #a78bfa; }
+
+.discover-meta {
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+.match-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.match-bar {
+  height: 5px;
+  border-radius: 9999px;
+  min-width: 4px;
+  max-width: 120px;
+  transition: width 0.3s ease;
+}
+
+.bar-high { background: #10b981; }
+.bar-mid  { background: #f59e0b; }
+.bar-low  { background: #4b5563; }
+
+.match-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.discover-follow-btn {
+  padding: 0.4rem 1.1rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.discover-follow-btn:hover { background: #2563eb; }
+
+.discover-follow-btn.following {
+  background: transparent;
+  border: 1px solid #4b5563;
+  color: #9ca3af;
+}
+
+.discover-follow-btn.following:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}

@@ -1,0 +1,154 @@
+.userprofile-page {
+  min-height: 100vh;
+  background: #111827;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.userprofile-card {
+  background: #1f2937;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 640px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.userprofile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.userprofile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #6d28d9;
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.userprofile-info {
+  flex: 1;
+}
+
+.userprofile-username {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.4rem;
+}
+
+.userprofile-stats {
+  display: flex;
+  gap: 1rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.userprofile-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.match-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.match-high { background: #064e3b; color: #34d399; }
+.match-mid  { background: #78350f; color: #fbbf24; }
+.match-low  { background: #1f2937; color: #6b7280; border: 1px solid #374151; }
+
+.follow-btn {
+  padding: 0.4rem 1.2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  transition: background 0.2s;
+}
+
+.follow-btn:hover { background: #2563eb; }
+
+.follow-btn.following {
+  background: transparent;
+  border: 1px solid #4b5563;
+  color: #9ca3af;
+}
+
+.follow-btn.following:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.action-error {
+  color: #f87171;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.userprofile-streak {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #d1d5db;
+  font-size: 0.95rem;
+}
+
+.streak-icon { font-size: 1.1rem; }
+
+.streak-longest { color: #6b7280; }
+
+.userprofile-habits h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  margin: 0 0 0.75rem;
+}
+
+.no-habits { color: #6b7280; font-size: 0.9rem; }
+
+.habits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.habit-card {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.habit-name {
+  color: #10b981;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.habit-completions {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
