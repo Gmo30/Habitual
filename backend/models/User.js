@@ -22,6 +22,8 @@ const userSchema = new mongoose.Schema(
       longest: { type: Number, default: 0 },
       lastCheckIn: { type: Date, default: null }
     },
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );
