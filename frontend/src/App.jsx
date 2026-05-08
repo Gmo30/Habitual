@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link, Navigate} from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Home from './pages/home';
 import Profile from './pages/profile';
 import Login from './pages/login';
@@ -6,13 +6,14 @@ import Register from './pages/Register';
 import Navbar from './components/navbar';
 import { useEffect, useState } from 'react';
 import api from './api/axios';
-
+import { useHabits } from './api/habitAPI'; // Import the hook here
 
 function App() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     console.log(user);
+    const { habits, loading, addHabit, removeHabit } = useHabits(user);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -42,10 +43,14 @@ function App() {
 
     return (
         <BrowserRouter>
-            <Navbar user={user} setUser={setUser} />
+            <Navbar user={user} setUser={setUser}
+                habits={habits}
+                loading={loading}
+                addHabit={addHabit}
+                removeHabit={removeHabit} />
             <Routes>
-                <Route path="/" element={<Home user={user} error={error} />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/" element={<Home user={user} error={error} habits={habits}/>} />
+                <Route path="/profile" element={<Profile/>} />
                 <Route
                     path="/login"
                     element={user ? <Navigate to="/" /> : <Login setUser={setUser} />}
