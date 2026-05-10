@@ -2,21 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
 
-const Home = ({ user, error, habits }) => {
+const Home = ({ user, error, habits, toggleHabit, isCompletedToday }) => {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-      {/* {error && <p className="text-red-500 mb-4 text-sm bg-white p-2 rounded">{error}</p>} */}
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
+      {error && <p className="text-red-500 mb-4 text-sm bg-white p-2 rounded">{error}</p>}
 
       {user ? (
         /* --- LOGGED IN VIEW --- */
         <>
-          <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">
-              Welcome, {user.username}
-            </h2>
+
+          <div className="bg-white p-6 rounded-lg shadow-md mb-4 w-full max-w-2xl">
+            <h2 className="text-2xl font-bold mb-1 text-gray-800">Welcome, {user.username}</h2>
             <p className="text-gray-600">Email: {user.email}</p>
           </div>
-
+          
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-4 text-gray-800">Your Habits</h2>
             {/* Added optional chaining (habits?) just in case habits is undefined on load */}
@@ -27,6 +26,12 @@ const Home = ({ user, error, habits }) => {
                 {habits?.map((habit) => (
                   <div key={habit._id} className="p-4 border rounded-lg shadow-sm bg-white">
                     <h2 className="text-xl font-semibold text-emerald-600">{habit.name}</h2>
+                    <button
+                      className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                      onClick={() => toggleHabit(habit._id)}
+                    >
+                      {isCompletedToday(habit) ? "✅ Completed today" : "Mark as completed"}
+                    </button>
                   </div>
                 ))}
               </div>
@@ -54,30 +59,30 @@ const Home = ({ user, error, habits }) => {
 
           <div className="flex justify-center mt-10">
             <div className="flex flex-wrap justify-center gap-8 max-w-5xl w-full px-4">
-            <div className="flex-shrink-0 w-64 bg-white rounded-xl shadow-md p-4 flex flex-col items-center">
-              <img src="https://cdn.pixabay.com/photo/2015/08/26/18/20/info-908889_960_720.png"
-                className="w-30 h-30 object-contain mb-3" />
-              <p className="text-center text-gray-600">
-                Organize your habits easily
-              </p>
-            </div>
+              <div className="flex-shrink-0 w-64 bg-white rounded-xl shadow-md p-4 flex flex-col items-center">
+                <img src="https://cdn.pixabay.com/photo/2015/08/26/18/20/info-908889_960_720.png"
+                  className="w-30 h-30 object-contain mb-3" />
+                <p className="text-center text-gray-600">
+                  Organize your habits easily
+                </p>
+              </div>
 
-            <div className="flex-shrink-0 w-64 bg-white rounded-xl shadow-md p-4 flex flex-col items-center">
-              <img src="https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331258_1280.png"
-                className="w-30 h-30 object-contain mb-3" />
-              <p className="text-center text-gray-600">
-                Make friends and find community
-              </p>
-            </div>
+              <div className="flex-shrink-0 w-64 bg-white rounded-xl shadow-md p-4 flex flex-col items-center">
+                <img src="https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331258_1280.png"
+                  className="w-30 h-30 object-contain mb-3" />
+                <p className="text-center text-gray-600">
+                  Make friends and find community
+                </p>
+              </div>
 
-            <div className="flex-shrink-0 w-64 bg-white rounded-xl shadow-md p-4 flex flex-col items-center">
-              <img src="https://cdn.pixabay.com/photo/2024/11/20/08/53/checklist-9210780_1280.png"
-                className="w-30 h-30 object-contain mb-3" />
-              <p className="text-center text-gray-600">
-                Track progress daily
-              </p>
+              <div className="flex-shrink-0 w-64 bg-white rounded-xl shadow-md p-4 flex flex-col items-center">
+                <img src="https://cdn.pixabay.com/photo/2024/11/20/08/53/checklist-9210780_1280.png"
+                  className="w-30 h-30 object-contain mb-3" />
+                <p className="text-center text-gray-600">
+                  Track progress daily
+                </p>
+              </div>
             </div>
-          </div>
           </div>
         </div>
 

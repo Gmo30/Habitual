@@ -15,10 +15,10 @@ function App() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { habits, loading, addHabit, removeHabit } = useHabits(user);
+    const { habits, loading, addHabit, removeHabit, toggleHabit, isCompletedToday} = useHabits(user);
     const { following, followers, followUser, unfollowUser, searchUsers, getDiscover, getUserProfile } = useSocial(user);
 
-    /*useEffect(() => {
+    useEffect(() => {
         const fetchUser = async () => {
             try {
                 console.log("ATTEMPTING TO FETCH USER...");
@@ -34,7 +34,7 @@ function App() {
             }
         };
         fetchUser();
-    }, []);*/
+    }, []);
 
     if (isLoading) {
         return (
@@ -56,7 +56,7 @@ function App() {
                 searchUsers={searchUsers}
             />
             <Routes>
-                <Route path="/" element={<Home user={user} error={error} habits={habits} />} />
+                <Route path="/" element={<Home user={user} error={error} habits={habits} toggleHabit={toggleHabit} isCompletedToday={isCompletedToday} />} />
                 <Route
                     path="/profile"
                     element={user ? <Profile user={user} habits={habits} following={following} followers={followers} /> : <Navigate to="/login" />}

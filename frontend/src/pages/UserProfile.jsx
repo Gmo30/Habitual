@@ -20,6 +20,7 @@ const UserProfile = ({ user, following, followUser, unfollowUser, getUserProfile
       setNotFound(false);
       try {
         const data = await getUserProfile(username);
+        //console.log(data)
         setProfile(data);
       } catch (err) {
         setNotFound(true);

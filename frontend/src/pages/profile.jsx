@@ -1,9 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import "./profile.css";
 
 const Profile = ({ user, habits, following, followers }) => {
   const [activeTab, setActiveTab] = useState("habits");
+  // const [streak, setStreak] = useState(0);
+
+  // useEffect(() => {
+  //   const fetchStreakStatus = async () => {
+  //     try {
+  //       const response = await fetch('/api/users/streak', {
+  //         credentials: 'include' // Ensures HttpOnly cookie is sent
+  //       });
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setStreak(data.streak);
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to fetch streak status:", error);
+  //     }
+  //   };
+
+  //   fetchStreakStatus();
+  // }, []);
 
   if (!user) return null;
 
@@ -25,7 +44,7 @@ const Profile = ({ user, habits, following, followers }) => {
       </div>
 
       {/* Streak */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-4 w-full max-w-2xl flex gap-8">
+      <div className="bg-white p-6 rounded-lg shadow-md mb-4 w-full max-w-2xl flex gap-8 items-center justify-center">
         <div>
           <p className="text-2xl font-bold text-gray-800">🔥 {user.streak?.current ?? 0}</p>
           <p className="text-gray-600 text-sm">Current streak</p>
@@ -69,6 +88,7 @@ const Profile = ({ user, habits, following, followers }) => {
                     <div key={habit._id} className="p-4 border rounded-lg shadow-sm bg-white">
                       <h3 className="text-xl font-semibold text-emerald-600">{habit.name}</h3>
                       <p className="text-gray-500 text-sm">{habit.completedDates.length} completions</p>
+                      <p className="text-gray-500 text-sm">Created: {new Date(habit.createdAt).toLocaleDateString()}</p>
                     </div>
                   ))}
                 </div>
