@@ -14,11 +14,11 @@ import { useSocial } from './api/socialAPI';
 function App() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const { habits, loading, addHabit, removeHabit } = useHabits(user);
     const { following, followers, followUser, unfollowUser, searchUsers, getDiscover, getUserProfile } = useSocial(user);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchUser = async () => {
             try {
                 console.log("ATTEMPTING TO FETCH USER...");
@@ -34,7 +34,7 @@ function App() {
             }
         };
         fetchUser();
-    }, []);
+    }, []);*/
 
     if (isLoading) {
         return (

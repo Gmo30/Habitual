@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: 'Play', sans-serif;
 
   position: sticky;
   top: 0;

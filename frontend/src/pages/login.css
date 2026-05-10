@@ -6,6 +6,7 @@
     align-items: center;
     align-items: flex-start;
     padding-top: 10vh;
+    font-family: 'Play', sans-serif;
 }
 
 .card {
@@ -13,14 +14,26 @@
     width: 70%;
     border-radius: 1vw;
     background-color: #FFFFFF;
-    padding: 1vw;
-    display: flex;
-    flex-direction: column;
+    padding: 2vw;
+}
+
+.card h1 {
+    font-family: 'Play', sans-serif;
+    font-weight: 700;
+    margin-bottom: 40px;
 }
 
 .input-fields {
     margin: 20px 1px 10px 1px;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.input-fields label {
+    width: 90%;
+    text-align: left;
 }
 
 .input-fields input {
@@ -29,6 +42,7 @@
     border-radius: 6px;
     border: 1px solid rgb(136, 139, 155);
     margin: 10px;
+    padding-left: 10px;
 }
 
 .button {
@@ -43,4 +57,10 @@
 
 .button:hover {
     background: rgb(155, 210, 240);
+}
+
+@media (max-width: 768px){
+    h1{
+        font-size: 50px;
+    }
 }
