@@ -103,7 +103,7 @@ const Discover = ({ user, following, followUser, unfollowUser, getDiscover, sear
                 </div>
                 <button
                   onClick={() => handleFollow(u)}
-                  className={`px-4 py-1.5 rounded-lg font-semibold text-sm flex-shrink-0 ${
+                  className={`px-4 py-1.5 rounded-lg font-semibold text-sm shrink-0 ${
                     isFollowing(u._id)
                       ? "border border-gray-300 text-gray-600 hover:border-red-400 hover:text-red-500"
                       : "bg-blue-500 text-white hover:bg-blue-600"

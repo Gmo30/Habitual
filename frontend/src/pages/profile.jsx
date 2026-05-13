@@ -1,28 +1,9 @@
-import React, { useState, useEffect} from "react";
+import React, { useState} from "react";
 import { Link } from "react-router-dom";
 import "./profile.css";
 
 const Profile = ({ user, habits, following, followers }) => {
   const [activeTab, setActiveTab] = useState("habits");
-  // const [streak, setStreak] = useState(0);
-
-  // useEffect(() => {
-  //   const fetchStreakStatus = async () => {
-  //     try {
-  //       const response = await fetch('/api/users/streak', {
-  //         credentials: 'include' // Ensures HttpOnly cookie is sent
-  //       });
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setStreak(data.streak);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to fetch streak status:", error);
-  //     }
-  //   };
-
-  //   fetchStreakStatus();
-  // }, []);
 
   if (!user) return null;
 

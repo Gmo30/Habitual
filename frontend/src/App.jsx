@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/home';
 import Profile from './pages/profile';
 import Login from './pages/login';
 import Register from './pages/Register';
@@ -10,6 +9,8 @@ import { useEffect, useState } from 'react';
 import api from './api/axios';
 import { useHabits } from './api/habitAPI';
 import { useSocial } from './api/socialAPI';
+import Habits from './pages/Habits';
+import Dashboard from './pages/Dashboard';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -46,17 +47,9 @@ function App() {
 
     return (
         <BrowserRouter>
-            <Navbar
-                user={user}
-                setUser={setUser}
-                habits={habits}
-                loading={loading}
-                addHabit={addHabit}
-                removeHabit={removeHabit}
-                searchUsers={searchUsers}
-            />
+            <Navbar user={user} setUser={setUser} />
             <Routes>
-                <Route path="/" element={<Home user={user} error={error} habits={habits} toggleHabit={toggleHabit} isCompletedToday={isCompletedToday} />} />
+                <Route path="/" element={<Dashboard user={user} error={error} habits={habits} toggleHabit={toggleHabit} isCompletedToday={isCompletedToday} />} />
                 <Route
                     path="/profile"
                     element={user ? <Profile user={user} habits={habits} following={following} followers={followers} /> : <Navigate to="/login" />}
@@ -76,6 +69,10 @@ function App() {
                 <Route
                     path="/register"
                     element={user ? <Navigate to="/" /> : <Register setUser={setUser} />}
+                />
+                <Route
+                    path="/habits"
+                    element={user ? <Habits habits={habits} loading={loading} addHabit={addHabit} removeHabit={removeHabit} /> : <Navigate to="/login" />}
                 />
             </Routes>
         </BrowserRouter>

@@ -1,105 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../api/axios";
-import "./navbar.css";
 
-const DEFAULT_HABITS = [
-  "Exercise",
-  "Read",
-  "Meditate",
-  "Drink Water",
-  "Journal",
-  "Sleep 8 hours",
-  "No Sugar",
-  "Walk 10k Steps",
+const BellIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+  </svg>
+);
+
+const GearIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+  </svg>
+);
+
+const navLinks = [
+  { name: "Dashboard", path: "/" },
+  { name: "Habits", path: "/habits" },
+  { name: "Discover", path: "/discover" },
+  { name: "Profile", path: "/profile" },
 ];
 
-const Navbar = ({ user, setUser, habits, loading, addHabit, removeHabit, searchUsers }) => {
+export default function Navbar({ user, setUser }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [showHabitsModal, setShowHabitsModal] = useState(false);
-  const [newHabit, setNewHabit] = useState("");
-  const [inputError, setInputError] = useState("");
-  const modalRef = useRef(null);
-
-  // Search state
-  const [showSearch, setShowSearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const searchRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setShowSearch(false);
-        setSearchQuery("");
-        setSearchResults([]);
-      }
-    };
-    if (showSearch) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showSearch]);
-
-  useEffect(() => {
-    if (!searchQuery.trim()) { setSearchResults([]); return; }
-    const timeout = setTimeout(async () => {
-      try {
-        const results = await searchUsers(searchQuery);
-        setSearchResults(results);
-      } catch {}
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [searchQuery]);
-
-  //Daily streak vars
-  const [streak, setStreak] = useState(0);
-  const [hasCheckedInToday, setHasCheckedInToday] = useState(false);
-  const [isClaiming, setIsClaiming] = useState(false);
-
-  useEffect(() => {
-    const fetchStreakStatus = async () => {
-      try {
-        const response = await fetch('/api/users/streak', {
-          credentials: 'include' // Ensures HttpOnly cookie is sent
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setStreak(data.streak);
-          setHasCheckedInToday(data.hasCheckedInToday);
-        }
-      } catch (error) {
-        console.error("Failed to fetch streak status:", error);
-      }
-    };
-
-    fetchStreakStatus();
-  }, []);
-
-  const handleClaimStreak = async () => {
-    if (hasCheckedInToday) return;
-
-    setIsClaiming(true);
-    try {
-      const response = await fetch('/api/users/check-in', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setStreak(data.streak);
-        setHasCheckedInToday(true);
-      }
-    } catch (error) {
-      console.error("Failed to claim streak:", error);
-    } finally {
-      setIsClaiming(false);
-    }
-  };
-
+  const isActive = (path) =>
+    path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
   const handleLogout = async () => {
     try {
@@ -110,244 +37,92 @@ const Navbar = ({ user, setUser, habits, loading, addHabit, removeHabit, searchU
       console.error("Failed to log out:", err);
     }
   };
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        setShowHabitsModal(false);
-      }
-    };
-    if (showHabitsModal)
-      document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showHabitsModal]);
-
-  const habitNames = habits.map((h) => h.name);
-
-  const handleQuickAdd = async (name) => {
-    if (habitNames.includes(name)) {
-      const habit = habits.find((h) => h.name === name);
-      if (habit) await removeHabit(habit._id);
-    } else {
-      await addHabit(name);
-    }
-  };
-
-  const handleCustomAdd = async () => {
-    const trimmed = newHabit.trim();
-    if (!trimmed) return;
-    const result = await addHabit(trimmed);
-    if (result.success) {
-      setNewHabit("");
-      setInputError("");
-    } else {
-      setInputError(result.message);
-    }
-  };
-
-  const isActive = (path) => location.pathname === path;
-
+  
   return (
-    <>
-      <nav className="navbar">
-        <div className="left">
-          <Link to="/">Habitual</Link>
-        </div>
+    <nav
+      className="w-full flex sticky top-0 z-50 items-center justify-between px-8 py-4 shadow-sm"
+      style={{ background: "#FFEDE6", borderBottom: "1px solid #e8e0d4" }}
+    >
+      <div className="flex items-center gap-6">
+        <button
+          onClick={() => navigate("/")}
+          className="text-2xl font-bold tracking-tight select-none bg-transparent border-none cursor-pointer p-0"
+          style={{ color: "#2c3a2e", fontFamily: "'Georgia', serif", letterSpacing: "-0.02em" }}
+        >
+          Habitual
+        </button>
 
-        <div className="right">
-          {user ? (
-            <>
-              {/* Interactive Claim Button */}
-              {/* Wrap the button in a relative div with the 'group' class */}
-<div className="relative group flex">
-  <button
-    onClick={handleClaimStreak}
-    disabled={hasCheckedInToday || isClaiming}
-    // Added px-4 py-1.5 back in for spacing, and border for the active state
-    className={`flex items-center space-x-2 px-4 py-1.5 rounded-full font-semibold transition-all duration-300 ${
-      hasCheckedInToday
-        ? 'bg-white text-gray-800 cursor-default' 
-        : 'bg-orange-500/10 border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white cursor-pointer shadow-[0_0_10px_rgba(249,115,22,0.3)]'
-    }`}
-  >
-    <span className="text-lg">🔥</span>
-    <span>{hasCheckedInToday ? `${streak}` : `Claim Streak (${streak})`}</span>
-  </button>
-
-  {/* Tooltip Content - Only renders and shows on hover if they have checked in */}
-  {hasCheckedInToday && (
-    <div className="absolute top-full left-1/2 mt-2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap bg-gray-800 text-white text-xs px-3 py-1.5 rounded-md shadow-lg">
-      {streak} Day Streak! • Claimed today
-    </div>
-  )}
-</div>
-              <button
-                className="nav-habits-btn"
-                onClick={() => setShowHabitsModal(true)}
-              >
-                Habits
-                {habits.length > 0 && (
-                  <span className="habits-badge">{habits.length}</span>
-                )}
-              </button>
-
-              <Link
-                to="/discover"
-                className={`nav-link ${isActive("/discover") ? "active" : ""}`}
-              >
-                Discover
-              </Link>
-
-              <Link
-                to="/profile"
-                className={`nav-link ${isActive("/profile") ? "active" : ""}`}
-              >
-                Profile
-              </Link>
-
-              {/* Search */}
-              <div className="search-wrap" ref={searchRef}>
-                <button
-                  className="search-icon-btn"
-                  onClick={() => { setShowSearch((p) => !p); setSearchQuery(""); setSearchResults([]); }}
-                  aria-label="Search users"
-                >
-                  🔍
-                </button>
-                {showSearch && (
-                  <div className="search-dropdown">
-                    <input
-                      autoFocus
-                      type="text"
-                      className="search-input"
-                      placeholder="Search users..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    {searchResults.length > 0 && (
-                      <ul className="search-results">
-                        {searchResults.map((u) => (
-                          <li key={u._id}>
-                            <Link
-                              to={`/users/${u.username}`}
-                              className="search-result-item"
-                              onClick={() => { setShowSearch(false); setSearchQuery(""); setSearchResults([]); }}
-                            >
-                              <span className="search-result-avatar">{u.username[0].toUpperCase()}</span>
-                              <span>{u.username}</span>
-                              <span className="search-result-streak">🔥 {u.streak?.current ?? 0}</span>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    {searchQuery.trim() && searchResults.length === 0 && (
-                      <p className="search-no-results">No users found</p>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <button className="btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login">Log in</Link>
-              <Link to="/register">Register</Link>
-            </>
-          )}
-        </div>
-      </nav>
-
-      {showHabitsModal && (
-        <div className="modal-overlay">
-          <div className="habits-modal" ref={modalRef}>
-            <div className="modal-header">
-              <h2>Your Habits</h2>
-              <button
-                className="modal-close"
-                onClick={() => setShowHabitsModal(false)}
-              >
-                ✕
-              </button>
-            </div>
-
-            {habits.length > 0 && (
-              <div className="modal-section">
-                <p className="modal-label">Active Habits ({habits.length})</p>
-                <ul className="active-habits-list">
-                  {habits.map((habit) => (
-                    <li key={habit._id} className="active-habit-item">
-                      <span className="habit-dot">◆</span>
-                      {habit.name}
-                      <button
-                        className="remove-btn"
-                        onClick={() => removeHabit(habit._id)}
-                        disabled={loading}
-                      >
-                        ✕
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="modal-section">
-              <p className="modal-label">Quick Add</p>
-              <div className="habit-chips">
-                {DEFAULT_HABITS.map((name) => (
-                  <button
-                    key={name}
-                    className={`habit-chip ${habitNames.includes(name) ? "selected" : ""}`}
-                    onClick={() => handleQuickAdd(name)}
-                    disabled={loading}
-                  >
-                    {habitNames.includes(name) ? "✓ " : "+ "}
-                    {name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="modal-section">
-              <p className="modal-label">Custom Habit</p>
-              <div className="custom-habit-input">
-                <input
-                  type="text"
-                  value={newHabit}
-                  onChange={(e) => {
-                    setNewHabit(e.target.value);
-                    setInputError("");
+        <ul className="flex items-center gap-1 list-none m-0 p-0">
+          {navLinks.map((link) => {
+            const active = isActive(link.path);
+            return (
+              <li key={link.path}>
+                <Link
+                  to={link.path}
+                  className="relative px-4 py-2 text-sm rounded-lg inline-flex items-center"
+                  style={{
+                    color: active ? "#2c3a2e" : "#7a7a6e",
+                    fontWeight: active ? "600" : "400",
+                    textDecoration: "none",
                   }}
-                  onKeyDown={(e) => e.key === "Enter" && handleCustomAdd()}
-                  placeholder="e.g. Cold shower..."
-                  className={`habit-input ${inputError ? "input-error-border" : ""}`}
-                />
-                <button
-                  className="add-btn"
-                  onClick={handleCustomAdd}
-                  disabled={loading}
                 >
-                  Add
-                </button>
-              </div>
-              {inputError && <p className="input-error-msg">{inputError}</p>}
-            </div>
+                  {link.name}
+                  {active && (
+                    <span
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full"
+                      style={{ backgroundColor: "#2c3a2e" }}
+                    />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
 
-            <button
-              className="done-btn"
-              onClick={() => setShowHabitsModal(false)}
-            >
-              Done
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+      {/* Right side */}
+      <div className="flex items-center gap-3">
+        <button
+          className="w-9 h-9 flex items-center justify-center rounded-full border-none cursor-pointer"
+          style={{ color: "#5a6b5c", background: "none" }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#ede8df")}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+          aria-label="Notifications"
+        >
+          <BellIcon />
+        </button>
+
+        <button
+          className="w-9 h-9 flex items-center justify-center rounded-full border-none cursor-pointer"
+          style={{ color: "#5a6b5c", background: "none" }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#ede8df")}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+          aria-label="Settings"
+          onClick={() => navigate("/settings")}
+        >
+          <GearIcon />
+        </button>
+
+        {user ? (
+          <button
+            onClick={handleLogout}
+            className="text-sm font-semibold px-4 py-1.5 rounded-full border-none cursor-pointer"
+            style={{ background: "#4c614d", color: "#fff" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#3a4e3a")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#4c614d")}
+          >
+            Log out
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="text-sm font-semibold px-4 py-1.5 rounded-full"
+            style={{ background: "#4c614d", color: "#fff", textDecoration: "none" }}
+          >
+            Log in
+          </Link>
+        )}
+      </div>
+    </nav>
   );
-};
-
-export default Navbar;
+}

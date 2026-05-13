@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./home.css";
 
-const Home = ({ user, error, habits, toggleHabit, isCompletedToday }) => {
+const Dashboard = ({ user, error, habits, toggleHabit, isCompletedToday }) => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       {error && <p className="text-red-500 mb-4 text-sm bg-white p-2 rounded">{error}</p>}
@@ -91,4 +90,4 @@ const Home = ({ user, error, habits, toggleHabit, isCompletedToday }) => {
   );
 };
 
-export default Home;
+export default Dashboard;
