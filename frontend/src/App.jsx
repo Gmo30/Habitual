@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import api from './api/axios';
 import { useHabits } from './api/habitAPI';
 import { useSocial } from './api/socialAPI';
+import { useStreak } from './api/streakAPI';
 import Habits from './pages/Habits';
 import Dashboard from './pages/Dashboard';
 
@@ -18,6 +19,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const { habits, loading, addHabit, removeHabit, toggleHabit, isCompletedToday} = useHabits(user);
     const { following, followers, followUser, unfollowUser, searchUsers, getDiscover, getUserProfile } = useSocial(user);
+    const { streak, hasCheckedInToday, checkIn } = useStreak(user);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -49,18 +51,18 @@ function App() {
         <BrowserRouter>
             <Navbar user={user} setUser={setUser} />
             <Routes>
-                <Route path="/" element={<Dashboard user={user} error={error} habits={habits} toggleHabit={toggleHabit} isCompletedToday={isCompletedToday} />} />
+                <Route path="/" element={<Dashboard user={user} error={error} habits={habits} toggleHabit={toggleHabit} isCompletedToday={isCompletedToday} streak={streak} hasCheckedInToday={hasCheckedInToday} checkIn={checkIn}/>} />
                 <Route
                     path="/profile"
                     element={user ? <Profile user={user} habits={habits} following={following} followers={followers} /> : <Navigate to="/login" />}
                 />
                 <Route
                     path="/discover"
-                    element={user ? <Discover user={user} following={following} followUser={followUser} unfollowUser={unfollowUser} getDiscover={getDiscover} searchUsers={searchUsers} /> : <Navigate to="/login" />}
+                    element={user ? <Discover user={user} following={following} followers={followers} followUser={followUser} unfollowUser={unfollowUser} getDiscover={getDiscover} searchUsers={searchUsers} /> : <Navigate to="/login" />}
                 />
                 <Route
                     path="/users/:username"
-                    element={user ? <UserProfile user={user} following={following} followUser={followUser} unfollowUser={unfollowUser} getUserProfile={getUserProfile} /> : <Navigate to="/login" />}
+                    element={user ? <UserProfile user={user} following={following} followers={followers} followUser={followUser} unfollowUser={unfollowUser} getUserProfile={getUserProfile} /> : <Navigate to="/login" />}
                 />
                 <Route
                     path="/login"
