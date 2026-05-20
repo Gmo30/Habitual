@@ -1,4 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 import api from "../api/axios";
 
 const BellIcon = () => (
@@ -25,6 +26,8 @@ const navLinks = [
 export default function Navbar({ user, setUser }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const [open, setOpen] = useState(false);
+
   const isActive = (path) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
@@ -52,13 +55,19 @@ export default function Navbar({ user, setUser }) {
           Habitual
         </button>
 
-        <ul className="flex items-center gap-1 list-none m-0 p-0">
+        <ul className={`
+              flex items-center gap-1 list-none m-0 p-0
+              md:flex
+              ${open ? "flex flex-col absolute top-16 left-0 w-full bg-[#FFEDE6] p-4" : "hidden md:flex"}
+            `}
+          >
           {navLinks.map((link) => {
             const active = isActive(link.path);
             return (
               <li key={link.path}>
                 <Link
                   to={link.path}
+                  onClick={() => setOpen(false)}
                   className="relative px-4 py-2 text-sm rounded-lg inline-flex items-center"
                   style={{
                     color: active ? "#2c3a2e" : "#7a7a6e",
@@ -121,7 +130,22 @@ export default function Navbar({ user, setUser }) {
           >
             Log in
           </Link>
+
+          
         )}
+          <button
+          className="md:hidden"
+          onClick={() => setOpen(!open)}
+          style={{
+            fontSize: "1.5rem",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "#2c3a2e"
+          }}
+        >
+          <span>&#9776;</span>
+      </button>
       </div>
     </nav>
   );
