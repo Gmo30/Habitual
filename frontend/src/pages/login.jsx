@@ -77,8 +77,10 @@ const Login = ({ setUser }) => {
                             placeholder="Enter your password"
                             required
                         />
+
+                        <button className="button">Log in</button>
                     </div>
-                    <button className="button">Log in</button>
+                    
                 </form>
             </div>
         </div>

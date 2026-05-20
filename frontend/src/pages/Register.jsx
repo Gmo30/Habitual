@@ -93,8 +93,9 @@ const Register = ({ setUser }) => {
                             placeholder="Enter your password"
                             required
                         />
+                        <button className="button">Register</button>
                     </div>
-                    <button className="button">Register</button>
+                    
                 </form>
             </div>
         </div>

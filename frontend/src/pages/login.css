@@ -12,6 +12,7 @@
 .card {
     max-width: 768px;
     width: 70%;
+    min-width: 400px;
     border-radius: 1vw;
     background-color: #FFFFFF;
     padding: 2vw;
@@ -20,7 +21,8 @@
 .card h1 {
     font-family: 'Play', sans-serif;
     font-weight: 700;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
+    font-size: 50px;
 }
 
 .input-fields {
@@ -53,14 +55,9 @@
     height: 50px;
     width: 90%;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .button:hover {
     background: rgb(155, 210, 240);
-}
-
-@media (max-width: 768px){
-    h1{
-        font-size: 50px;
-    }
 }
